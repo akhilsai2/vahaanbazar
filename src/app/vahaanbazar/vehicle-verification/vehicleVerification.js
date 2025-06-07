@@ -104,7 +104,7 @@ const VehicleVerification = () => {
           <Column field="" header="Images" bodyStyle={{ minWidth: "50px" }} />
           <Column
             header="Approval"
-            body={(rowData) => (!rowData.verified ? approveButtonTemplate(rowData) : null)}
+            body={(rowData) => (!rowData.verified ? approveButtonTemplate(rowData) : <span className="text-green-700">Approved</span>)}
             bodyStyle={{ minWidth: "150px", textAlign: "center" }}
             align={"center"}
           />
