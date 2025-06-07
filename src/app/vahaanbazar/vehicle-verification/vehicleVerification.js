@@ -110,6 +110,7 @@ const VehicleVerification = () => {
         value={images}
         responsiveOptions={responsiveOptions}
         numVisible={9}
+      baseZIndex={100000}
         style={{ maxWidth: "50%" }}
         circular
         fullScreen

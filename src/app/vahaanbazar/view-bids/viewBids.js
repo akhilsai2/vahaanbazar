@@ -150,7 +150,6 @@ const thumbnailTemplate = (item) => (
  const openGallery = (rowData) => {
   if (galleria.current) {
     galleria.current.show();
-    // Parse the JSON string to get the array of URLs
     let urls = [];
     try {
       const imgObj = rowData.vehicle_details.images?.[0];
@@ -158,9 +157,9 @@ const thumbnailTemplate = (item) => (
         urls = JSON.parse(imgObj.image_url);
       }
     } catch (e) {
+      console.error("Error parsing image URLs:", e);
       urls = [];
     }
-    // Set images as array of objects for Galleria
     setImages(urls.map(url => ({ itemImageSrc: url, alt: "Vehicle Image" })));
   }
 };
@@ -178,6 +177,7 @@ const thumbnailTemplate = (item) => (
         value={images}
         responsiveOptions={responsiveOptions}
         numVisible={9}
+        baseZIndex={100000}
         style={{ maxWidth: "50%" }}
         circular
         fullScreen
