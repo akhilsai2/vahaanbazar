@@ -226,3 +226,10 @@ td,
   background:rgb(0, 132, 255) !important;
   padding: 2px;
 }
+.p-galleria-mask {
+    z-index: 80 !important;
+    background-color: #000000e6 !important;
+}
+.link_pointer{
+  cursor: pointer;
+}
