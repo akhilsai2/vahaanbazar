@@ -49,10 +49,6 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
     <form onSubmit={handleSubmit} className=" mx-auto p-1  space-y-5 ">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <span className="my-1">
-          <label>ID</label>
-          <InputText name="id" value={form.id} onChange={handleChange} className="w-full h-8 px-4 py-2" />
-        </span>
-        <span className="my-1">
           <label>Category</label>
           <InputText name="category" value={form.category} onChange={handleChange} className="w-full h-8 px-4 py-2" />
         </span>

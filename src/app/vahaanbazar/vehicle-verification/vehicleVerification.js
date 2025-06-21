@@ -14,7 +14,25 @@ import { Checkbox } from "primereact/checkbox";
 import { FaRegEye } from "react-icons/fa";
 import { Galleria } from "primereact/galleria";
 import { Dialog } from "primereact/dialog";
-import VehicleUpdate from "./vehicel-update"; 
+import VehicleUpdate from "./vehicel-update";
+
+const initialState = {
+  category: "",
+  price: "",
+  registration_number: "",
+  state: "",
+  brand: "",
+  no_of_tyres: "",
+  chassis_number: "",
+  location: "",
+  original_invoice: false,
+  asset_description: "",
+  year_of_manufacturing: "",
+  odometer: "",
+  insurance: false,
+  gst_applicable: false,
+  images: [],
+};
 
 const VehicleVerification = () => {
   const { showLoadingToast, updateToSuccessToast, updateToErrorToast } = useToastService();
@@ -110,7 +128,7 @@ const VehicleVerification = () => {
   const thumbnailTemplate = (item) => <img src={item?.itemImageSrc} alt={item.alt} style={{ display: "block" }} />;
   const openGallery = (rowData) => {
     if (galleria.current) {
-      galleria.current.show();  
+      galleria.current.show();
       setImages(rowData.fitness_images.map((url) => ({ itemImageSrc: url.image, alt: "Vehicle Image" })));
     }
   };
@@ -122,12 +140,7 @@ const VehicleVerification = () => {
 
   return (
     <>
-     <Dialog
-        header="Update Vehicle"
-        visible={showUpdateDialog}
-        style={{ width: "75%" }}
-        onHide={() => setShowUpdateDialog(false)}
-      >
+      <Dialog header="Update Vehicle" visible={showUpdateDialog} style={{ width: "75%" }} onHide={() => setShowUpdateDialog(false)}>
         {selectedVehicle && (
           <VehicleUpdate
             initialData={selectedVehicle}
@@ -140,7 +153,7 @@ const VehicleVerification = () => {
         value={images}
         responsiveOptions={responsiveOptions}
         numVisible={9}
-      baseZIndex={100000}
+        baseZIndex={100000}
         style={{ maxWidth: "50%" }}
         circular
         fullScreen
@@ -155,6 +168,17 @@ const VehicleVerification = () => {
       <div className="viewDetailsSection">
         <div className="flex justify-between items-center ">
           <h2 className="text-xl font-bold">Vehicle Verification</h2>
+          <div className="flex gap-2">
+            <Button
+              label="Add Vehicle"
+              icon="pi pi-plus"
+              onClick={() => {
+                setSelectedVehicle(initialState);
+                setShowUpdateDialog(true);
+              }}
+              className="py-1 px-3"
+            />
+          </div>
         </div>
         <Divider />
 
