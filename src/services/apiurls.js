@@ -27,6 +27,8 @@ export const BIDS = {
  export const VEHICLES = {
   VEHICLE_VERFICATION:"v1/admin/vehicles",
   VEHICLE_APPROVAL:"v1/admin/verify-application",
+  VEHICLE_CATEGORY_IMAGE_UPDATE:"v1/admin/vehicle-sale-categories/",
+  CATEGORIES:"v1/vehicle-sale-categories"
  }
  export const PAYMENT = {
   PAYMENT_HISTORY:"v1/payments",

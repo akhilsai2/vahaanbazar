@@ -13,6 +13,8 @@ import useVehicleService from "../../../services/useVehicleService";
 import { Checkbox } from "primereact/checkbox";
 import { FaRegEye } from "react-icons/fa";
 import { Galleria } from "primereact/galleria";
+import { Dialog } from "primereact/dialog";
+import VehicleUpdate from "./vehicel-update"; 
 
 const VehicleVerification = () => {
   const { showLoadingToast, updateToSuccessToast, updateToErrorToast } = useToastService();
@@ -21,6 +23,21 @@ const VehicleVerification = () => {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]); // State to hold images for the gallery
   const galleria = useRef(null);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  // ID column body template
+  const idBody = (rowData) => (
+    <span
+      className="text-blue-600 hover:underline cursor-pointer"
+      onClick={() => {
+        setSelectedVehicle(rowData);
+        setShowUpdateDialog(true);
+      }}
+    >
+      {rowData.id}
+    </span>
+  );
 
   const responsiveOptions = [
     {
@@ -88,9 +105,9 @@ const VehicleVerification = () => {
     return <Checkbox checked={rowData.original_invoice} disable={"true"} className="p-checkbox-sm" />;
   };
 
-  const itemTemplate = (item) => <img src={item.itemImageSrc} alt={item.alt} style={{ width: "100%", display: "block" }} />;
+  const itemTemplate = (item) => <img src={item?.itemImageSrc} alt={item.alt} style={{ width: "100%", display: "block" }} />;
 
-  const thumbnailTemplate = (item) => <img src={item.itemImageSrc} alt={item.alt} style={{ display: "block" }} />;
+  const thumbnailTemplate = (item) => <img src={item?.itemImageSrc} alt={item.alt} style={{ display: "block" }} />;
   const openGallery = (rowData) => {
     if (galleria.current) {
       galleria.current.show();  
@@ -105,6 +122,19 @@ const VehicleVerification = () => {
 
   return (
     <>
+     <Dialog
+        header="Update Vehicle"
+        visible={showUpdateDialog}
+        style={{ width: "75%" }}
+        onHide={() => setShowUpdateDialog(false)}
+      >
+        {selectedVehicle && (
+          <VehicleUpdate
+            initialData={selectedVehicle}
+            // onSubmit={handleVehicleUpdate}
+          />
+        )}
+      </Dialog>
       <Galleria
         ref={galleria}
         value={images}
@@ -138,7 +168,7 @@ const VehicleVerification = () => {
             loading={loading} // Show loading spinner
             lazy
           >
-            <Column field="id" header="ID" bodyStyle={{ minWidth: "60px", maxWidth: "80px" }} />
+            <Column field="id" header="ID" bodyStyle={{ minWidth: "60px", maxWidth: "80px" }} body={idBody} />
             <Column field="category" header="Category" bodyStyle={{ minWidth: "100px", maxWidth: "120px" }} />
             <Column field="price" header="Price" bodyStyle={{ minWidth: "120px", maxWidth: "140px" }} align={"right"} />
             <Column field="registration_number" header="Registration Number" bodyStyle={{ minWidth: "150px", maxWidth: "180px" }} align={"right"} />

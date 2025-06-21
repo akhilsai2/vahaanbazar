@@ -14,6 +14,7 @@ import useToastService from "../../../services/useToastService";
 import Cookies from "js-cookie";
 import { Galleria } from "primereact/galleria";
 import { FaRegEye } from "react-icons/fa";
+import Image from "next/image";
 
 const ViewBids = () => {
   const { showLoadingToast, updateToSuccessToast, updateToErrorToast } = useToastService();
@@ -140,11 +141,11 @@ const ViewBids = () => {
   );
 
  const itemTemplate = (item) => (
-  <img src={item.itemImageSrc} alt={item.alt} style={{ width: "100%", display: "block" }} />
+  <Image src={item?.itemImageSrc} alt={item?.alt} style={{ width: "full", display: "block" }} width={1000} height={1000}/>
 );
 
 const thumbnailTemplate = (item) => (
-  <img src={item.itemImageSrc} alt={item.alt} style={{ display: "block" }} />
+  <Image src={item?.itemImageSrc} alt={item?.alt} style={{ display: "block" }} width={100} height={100} />
 );
 
  const openGallery = (rowData) => {
@@ -160,7 +161,9 @@ const thumbnailTemplate = (item) => (
       console.error("Error parsing image URLs:", e);
       urls = [];
     }
-    setImages(urls.map(url => ({ itemImageSrc: url, alt: "Vehicle Image" })));
+    if(urls && urls.length>0){
+      setImages(urls?.map(url => ({ itemImageSrc: url, alt: "Vehicle Image" })));
+    }
   }
 };
 
