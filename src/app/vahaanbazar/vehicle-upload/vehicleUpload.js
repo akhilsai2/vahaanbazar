@@ -9,14 +9,6 @@ import { Divider } from "primereact/divider";
 import useVehicleService from "../../../services/useVehicleService";
 import useToastService from "../../../services/useToastService";
 
-const categoryOptions = [
-  { id: 1, label: "Truck", value: "truck" },
-  { id: 2, label: "Car", value: "car" },
-  { id: 3, label: "Bus", value: "bus" },
-  { id: 4, label: "Tractor", value: "tractor" },
-  // Add more categories as needed
-];
-
 const VehicleUpload = () => {
   const { CategoryImageUpload, getCategories } = useVehicleService();
   const { showLoadingToast, updateToSuccessToast, updateToErrorToast, showErrorToast } = useToastService();
@@ -42,13 +34,12 @@ const VehicleUpload = () => {
   }, []);
 
   const onUpload = async ({ files }) => {
-    console.log(files);
     const toastId = showLoadingToast("Uploading...");
-
     try {
-      const res = await CategoryImageUpload(files,selectedCategory.category, selectedCategory.id);
-
+      const res = await CategoryImageUpload(files, selectedCategory.category, selectedCategory.id);
       if (res) updateToSuccessToast(toastId, "Uploaded Successfully");
+      setSelectedCategory(null);
+      setFiles([]);
     } catch (err) {
       updateToErrorToast(toastId, "Error in uploading");
       console.error(err);
