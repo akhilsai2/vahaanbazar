@@ -67,6 +67,19 @@ const useApiService = () => {
     return response.json();
   };
 
+  const putUploadImage = async (endpoint,body)=>{
+    delete headers["Content-Type"]
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "PUT",
+      headers:{...headers },
+      body
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update data");
+    }
+    return response.json();
+  }
+
   // DELETE request
   const remove = async (endpoint) => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -79,7 +92,7 @@ const useApiService = () => {
     return response.json();
   };
 
-  return { Get, post, put, remove };
+  return { Get, post, put, remove ,putUploadImage};
 };
 
 export default useApiService;

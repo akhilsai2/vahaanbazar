@@ -3,7 +3,7 @@ import useApiService from "@/services/useApiservice";
 import { VEHICLES } from "./apiurls";
 
 const useVehicleService = () => {
-  const { Get, post, put } = useApiService();
+  const { Get, post, put ,putUploadImage} = useApiService();
 
   const GetVehicleVerfication = (id) => {
     let url = VEHICLES.VEHICLE_VERFICATION;
@@ -36,7 +36,7 @@ const useVehicleService = () => {
   console.log(pair[0], pair[1]);
 }
     try {
-      const response = await put(`${VEHICLES.VEHICLE_CATEGORY_IMAGE_UPDATE}${id}`, formData);
+      const response = await putUploadImage(`${VEHICLES.VEHICLE_CATEGORY_IMAGE_UPDATE}${id}`, formData);
       return response;
     } catch (error) {
       console.error("Error while uplaoding:", error.message);

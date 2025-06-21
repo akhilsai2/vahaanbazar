@@ -55,7 +55,7 @@ const VehicleUpload = () => {
 
       <div className="w-25">
         <label className="block mb-2 text-sm  text-gray-700  font-bold">Category</label>
-        <Dropdown value={selectedCategory} optionLabel="category" dataKey="id" options={categories} onChange={(e) => setSelectedCategory(e.value)} placeholder="Select a category" className="w-100" />
+        <Dropdown value={selectedCategory} optionLabel="category" dataKey="id" loading={loading} options={categories} onChange={(e) => setSelectedCategory(e.value)} placeholder="Select a category" className="w-100" />
       </div>
       <div>
         <label className="block mb-2 text-sm  text-gray-700 font-bold">Images</label>
@@ -72,6 +72,7 @@ const VehicleUpload = () => {
           onClear={() => setFiles([])}
           onUpload={onUpload}
           files={files}
+          key={files}
           previewWidth={200}
           className="w-full"
           mode="advanced"
