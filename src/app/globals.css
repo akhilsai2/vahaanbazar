@@ -231,3 +231,10 @@ td,
   
   /* align-items: center !important; */
 }
+.p-fileupload-buttonbar button:first-of-type  {
+  display: none !important;
+}
+.p-fileupload .p-fileupload-content{
+  height:15vh !important;
+  overflow:auto !important;
+}

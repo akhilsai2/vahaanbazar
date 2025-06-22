@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
-import { Divider } from "primereact/divider";
+import { Dropdown } from "primereact/dropdown";
+import useVehicleService from "../../../services/useVehicleService";
+import useToastService from "../../../services/useToastService";
+import { FileUpload } from "primereact/fileupload";
 
 const initialState = {
   id: "",
@@ -20,11 +24,32 @@ const initialState = {
   odometer: "",
   insurance: false,
   gst_applicable: false,
-  images: [],
+  fitness_images: [],
 };
 
 const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
+  const { showLoadingToast, updateToSuccessToast, updateToErrorToast, showErrorToast } = useToastService();
+  const [selectedCategory, setSelectedCategory] = useState(initialData.category ?? "");
   const [form, setForm] = useState(initialData);
+  const { getCategories } = useVehicleService();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    getCategories()
+      .then((res) => {
+        if (res) {
+          setCategories(res);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        showErrorToast("Unable to get Categories");
+        setLoading(false);
+      });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,13 +61,15 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
     setForm((prev) => ({ ...prev, [name]: checked }));
   };
 
-//   const handleImageChange = (e) => {
-//     setForm((prev) => ({ ...prev, images: Array.from(e.target.files) }));
-//   };
+  const handleImageChange = (e) => {
+    setForm((prev) => ({ ...prev, fitness_images: Array.from(e) }));
+    setFiles(e);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSubmit) onSubmit(form);
+    const toastId = showLoadingToast("Updating Vehicle...");
+    if (onSubmit) onSubmit(form, toastId);
   };
 
   return (
@@ -50,7 +77,20 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <span className="my-1">
           <label>Category</label>
-          <InputText name="category" value={form.category} onChange={handleChange} className="w-full h-8 px-4 py-2" />
+          <Dropdown
+            value={selectedCategory}
+            optionLabel="category"
+            optionValue="category"
+            dataKey="id"
+            loading={loading}
+            options={categories}
+            onChange={(e) => {
+              setSelectedCategory(e.value);
+              setForm((prev)=>({...prev,category:e.value}));
+            }}
+            placeholder="Select a category"
+            className="w-full"
+          />
         </span>
         <span className="my-1">
           <label>Price</label>
@@ -59,10 +99,6 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
         <span className="my-1">
           <label>Registration Number</label>
           <InputText name="registration_number" value={form.registration_number} onChange={handleChange} className="w-full h-8 px-4 py-2" />
-        </span>
-        <span className="my-1">
-          <label>State</label>
-          <InputText name="state" value={form.state} onChange={handleChange} className="w-full h-8 px-4 py-2" />
         </span>
         <span className="my-1">
           <label>Brand</label>
@@ -77,10 +113,13 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
           <InputText name="chassis_number" value={form.chassis_number} onChange={handleChange} className="w-full h-8 px-4 py-2" />
         </span>
         <span className="my-1">
+          <label>State</label>
+          <InputText name="state" value={form.state} onChange={handleChange} className="w-full h-8 px-4 py-2" />
+        </span>
+        <span className="my-1">
           <label>Location</label>
           <InputText name="location" value={form.location} onChange={handleChange} className="w-full h-8 px-4 py-2" />
         </span>
-
         <span className="my-1">
           <label>Asset Description</label>
           <InputText name="asset_description" value={form.asset_description} onChange={handleChange} className="w-full h-8 px-4 py-2" />
@@ -92,6 +131,10 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
         <span className="my-1">
           <label>Odometer (KM)</label>
           <InputText name="odometer" value={form.odometer} onChange={handleChange} className="w-full h-8 px-4 py-2" />
+        </span>
+        <span className="my-1">
+          <label>Owner Mobile Number</label>
+          <InputText name="mobileNumber" value={form.owner_mobile_number} onChange={handleChange} className="w-full h-8 px-4 py-2" />
         </span>
         <span className="flex items-center gap-2">
           <Checkbox inputId="insurance" name="insurance" checked={form.insurance} onChange={handleCheckbox} />
@@ -105,12 +148,31 @@ const VehicleUpdate = ({ initialData = initialState, onSubmit }) => {
           <Checkbox inputId="original_invoice" name="original_invoice" checked={form.original_invoice} onChange={handleCheckbox} />
           <label htmlFor="original_invoice">Original Invoice</label>
         </span>
-        {/* <span>
-          <label>Images</label>
-          <input type="file" name="images" multiple onChange={handleImageChange} className="w-full h-8 px-4 py-2" />
-        </span> */}
       </div>
-      <Button type="submit" label="Update Vehicle" className="mt-5 float-end"  disabled/>
+      {!initialData.id && (
+        <span>
+          <FileUpload
+            name="images"
+            customUpload
+            multiple
+            accept="image/*"
+            maxFileSize={5000000}
+            chooseLabel="Browse"
+            uploadLabel="Upload"
+            cancelLabel="Cancel"
+            emptyTemplate={<p className="m-0">Drag and drop images here to upload.</p>}
+            onSelect={(e) => handleImageChange(e.files)}
+            onClear={() => setFiles([])}
+            files={files}
+            key={files}
+            previewWidth={200}
+            className="w-full"
+            mode="advanced"
+            auto={false}
+          />
+        </span>
+      )}
+      <Button type="submit" label={initialData.id ? "Update Vehicle" : "Create Vehicle"} className="mt-5 float-end"  disabled={!initialData.id}/>
     </form>
   );
 };

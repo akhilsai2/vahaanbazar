@@ -3,7 +3,7 @@ import useApiService from "@/services/useApiservice";
 import { VEHICLES } from "./apiurls";
 
 const useVehicleService = () => {
-  const { Get, post, put ,putUploadImage} = useApiService();
+  const { Get, post, put, putUploadImage, postData } = useApiService();
 
   const GetVehicleVerfication = (id) => {
     let url = VEHICLES.VEHICLE_VERFICATION;
@@ -25,16 +25,11 @@ const useVehicleService = () => {
   };
 
   const CategoryImageUpload = async (files, selectedCategory, id) => {
-    
     const formData = new FormData();
     formData.append("category", selectedCategory);
-
     files.forEach((file) => {
       formData.append("image", file);
     });
-   for (let pair of formData.entries()) {
-  console.log(pair[0], pair[1]);
-}
     try {
       const response = await putUploadImage(`${VEHICLES.VEHICLE_CATEGORY_IMAGE_UPDATE}${id}`, formData);
       return response;
@@ -53,6 +48,26 @@ const useVehicleService = () => {
     }
   };
 
-  return { GetVehicleVerfication, ApproveVehicleVerification, CategoryImageUpload, getCategories };
+  const VehicleUpdate = async (body) => {
+    try {
+      const response = await put(`${VEHICLES.VEHICLEUPDATE}${body.id}`, body);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const VehicleUpload = async (body) => {
+    const formData = new FormData();
+    console.log(body)
+    try {
+      // const response = await postData(VEHICLES.VEHICLEUPLOAD, formData);
+      // return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return { GetVehicleVerfication, ApproveVehicleVerification, CategoryImageUpload, getCategories, VehicleUpload, VehicleUpdate };
 };
 export default useVehicleService;

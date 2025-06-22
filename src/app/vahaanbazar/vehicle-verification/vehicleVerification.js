@@ -14,7 +14,7 @@ import { Checkbox } from "primereact/checkbox";
 import { FaRegEye } from "react-icons/fa";
 import { Galleria } from "primereact/galleria";
 import { Dialog } from "primereact/dialog";
-import VehicleUpdate from "./vehicel-update";
+import UpdateVehiclePopup from "./vehicel-update";
 
 const initialState = {
   category: "",
@@ -36,7 +36,7 @@ const initialState = {
 
 const VehicleVerification = () => {
   const { showLoadingToast, updateToSuccessToast, updateToErrorToast } = useToastService();
-  const { GetVehicleVerfication, ApproveVehicleVerification } = useVehicleService(); // Fetch bids using useBids service
+  const { GetVehicleVerfication, ApproveVehicleVerification, VehicleUpdate,VehicleUpload } = useVehicleService(); // Fetch bids using useBids service
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]); // State to hold images for the gallery
@@ -138,15 +138,49 @@ const VehicleVerification = () => {
     </div>
   );
 
+  const handleVehicleUpdate = (updatedData, toastId) => {
+    try {
+      if (updatedData.id) {
+        VehicleUpdate(updatedData)
+          .then((res) => {
+            if (res) {
+              updateToSuccessToast(toastId, "Vehicle Updated Successfully");
+              setShowUpdateDialog(false);
+              setSelectedVehicle(null);
+            } else {
+              updateToErrorToast(toastId, "Unable to Update the Vehicle");
+            }
+          })
+          .catch((err) => {
+            updateToErrorToast(toastId, "Unable to Update the Vehicle");
+            console.log(err);
+          });
+      } else {
+        VehicleUpload(updatedData)
+          .then((res) => {
+            if (res) {
+              updateToSuccessToast(toastId, "Vehicle Created Successfully");
+              setShowUpdateDialog(false);
+              setSelectedVehicle(null);
+            } else {
+              updateToErrorToast(toastId, "Unable to Create the Vehicle");
+            }
+          })
+          .catch((err) => {
+            updateToErrorToast(toastId, "Unable to Create the Vehicle");
+            console.log(err);
+          });
+      }
+    } catch (err) {
+      updateToErrorToast(toastId, "Unable to Update the Vehicle");
+      console.log(err);
+    }
+  };
+
   return (
     <>
-      <Dialog header="Update Vehicle" visible={showUpdateDialog} style={{ width: "75%" }} onHide={() => setShowUpdateDialog(false)}>
-        {selectedVehicle && (
-          <VehicleUpdate
-            initialData={selectedVehicle}
-            // onSubmit={handleVehicleUpdate}
-          />
-        )}
+      <Dialog header={"Vehicle Sell Upload"} visible={showUpdateDialog} style={{ width: "75%" }} onHide={() => setShowUpdateDialog(false)}>
+        {selectedVehicle && <UpdateVehiclePopup initialData={selectedVehicle} onSubmit={handleVehicleUpdate} />}
       </Dialog>
       <Galleria
         ref={galleria}

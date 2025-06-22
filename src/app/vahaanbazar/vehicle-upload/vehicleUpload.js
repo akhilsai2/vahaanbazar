@@ -30,6 +30,7 @@ const VehicleUpload = () => {
       .catch((err) => {
         showErrorToast("Unable to get Categories");
         setLoading(false);
+        console.error(err)
       });
   }, []);
 
