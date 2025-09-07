@@ -10,8 +10,7 @@ const Navbar = ({toggleSidebar}) => {
     const router = useRouter()
     const menuShiftLeft= useRef(null)
   const user = {
-    name: JSON.parse(Cookies.get("User")).username || "John Doe",
-    email: JSON.parse(Cookies.get("User")).email || "johndoe@example.com",
+    name: Cookies.get("User") || "John Doe",
   };
 
   const getInitials = (name) => {
@@ -29,6 +28,8 @@ const Navbar = ({toggleSidebar}) => {
             className="text-blue" onClick={()=>{
               router.push("/login")
               Cookies.remove("User")
+              Cookies.remove("UserId")
+              Cookies.remove("UserType")
               Cookies.remove("AccessToken")
               Cookies.remove("RefreshToken")
             }}>
@@ -65,7 +66,6 @@ const Navbar = ({toggleSidebar}) => {
 
         <div className="flex flex-col">
           <span className="font-bold text-right">{user.name.toUpperCase()}</span>
-          <span className="text-sm text-gray">{user.email}</span>
         </div>
       <button
           className="w-10 h-10 bg-gray-500 text-white rounded-[5px]  flex items-center justify-center text-xl font-bold"

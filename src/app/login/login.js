@@ -33,11 +33,13 @@ export default function Login({ setUserRegistration }) {
       toastService.showErrorToast("Please enter both email and password.");
     }
     try {
-      const response = await login({ username: email, password });
-      if (response) {
-        Cookies.set("RefreshToken", response?.tokens?.refresh);
-        Cookies.set("AccessToken", response?.tokens?.access);
-        Cookies.set("User", JSON.stringify(response?.tokens?.user));
+      const response = await login({ username_phone: email, password,login_type:"credentials" });
+      if (response && response?.data) {
+        Cookies.set("RefreshToken", response?.data.token);
+        Cookies.set("AccessToken", response?.data?.token);
+        Cookies.set("User", response?.data?.username);
+        Cookies.set("UserId", response?.data?.user_id);
+        Cookies.set("UserType", response?.data?.user_type);
         router.push("/vahaanbazar/view-bids");
       }
     } catch (err) {
@@ -46,7 +48,7 @@ export default function Login({ setUserRegistration }) {
   };
 
   const handleSendOtp = async () => {
-    debugger
+
     if (mobile.length !== 10) {
       toastService.showErrorToast("Please enter a valid 10-digit mobile number.");
       return;

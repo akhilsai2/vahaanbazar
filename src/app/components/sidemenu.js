@@ -9,19 +9,139 @@ import "../login/login.css";
 
 const SideMenu = () => {
   const items = [
+       {
+      label: "Auctions",
+      // icon: "pi pi-id-card",
+      expanded: true,
+      items: [
+        {
+          label: "View Auction",
+          // icon: "pi pi-eye",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/view-auctions">
+                {/* <span className="pi pi-eye mr-2" /> */}
+                <span>View Auctions</span>
+              </Link>
+            </div>
+          ),
+        },
+        {
+          label: "Approved Bids",
+          // icon: "pi pi-eye",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/approve-bids">
+                {/* <span className="pi pi-eye mr-2" /> */}
+                <span>Approved Bids</span>
+              </Link>
+            </div>
+          ),
+        },
+       
+     
+        {
+          label: "Bid Limit",
+          // icon: "pi pi-sliders-h",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/bid-limit">
+                {/* <span className="pi pi-sliders-h mr-2" /> */}
+                <span>Bid Limit</span>
+              </Link>
+            </div>
+          ),
+        },
+        {
+          label: "Vehicle Limit",
+          icon: "pi pi-car",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/vehicle-access">
+                {/* <span className="pi pi-car mr-2" /> */}
+                <span>Vehicle Limit</span>
+              </Link>
+            </div>
+          ),
+        },
+      ],
+    },
+   
     {
+      label: "Buy & Sell",
+      // icon: "pi pi-id-card",
+      expanded: true,
+      items: [        
+        {
+          label: "Buy & Sell",
+          // icon: "pi pi-check",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/buy-sell">
+                {/* <span className="pi pi-list mr-2" /> */}
+                <span>Vehicles</span>
+              </Link>
+            </div>
+          ),
+        },
+        // {
+        //   label: "vehicle Upload",
+        //   // icon: "pi pi-check",
+        //   template: () => (
+        //     <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+        //       <Link href="/vahaanbazar/vehicle-upload">
+        //         {/* <span className="pi pi-list mr-2" /> */}
+        //         <span>Upload</span>
+        //       </Link>
+        //     </div>
+        //   ),
+        // },
+      ],
+    },
+    {
+      label: "I & F",
+      // icon: "pi pi-id-card",
+      expanded: true,
+      items: [        
+        {
+          label: "Insurance & Finance",
+          // icon: "pi pi-check",
+          template: () => (
+            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+              <Link href="/vahaanbazar/insurance-finance">
+                {/* <span className="pi pi-list mr-2" /> */}
+                <span>Vehicles</span>
+              </Link>
+            </div>
+          ),
+        },
+        // {
+        //   label: "vehicle Upload",
+        //   // icon: "pi pi-check",
+        //   template: () => (
+        //     <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+        //       <Link href="/vahaanbazar/vehicle-upload">
+        //         {/* <span className="pi pi-list mr-2" /> */}
+        //         <span>Upload</span>
+        //       </Link>
+        //     </div>
+        //   ),
+        // },
+      ],
+    },
+     {
       label: "Activity",
       // icon: "pi pi-user",
       expanded: true,
       items: [
         {
-          label: "Users",
+          label: "User Wins",
           // icon: "pi pi-user",
           template: () => (
             <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/users">
+              <Link href="/vahaanbazar/user-wins">
                 {/* <span className="pi pi-user mr-2" /> */}
-                <span>Users</span>
+                <span>User Wins</span>
               </Link>
             </div>
           ),
@@ -40,99 +160,26 @@ const SideMenu = () => {
         },
       ],
     },
-    {
-      label: "Vehicle",
-      // icon: "pi pi-id-card",
-      expanded: true,
-      items: [
-        {
-          label: "Access",
-          icon: "pi pi-car",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/vehicle-access">
-                {/* <span className="pi pi-car mr-2" /> */}
-                <span>Access</span>
-              </Link>
-            </div>
-          ),
-        },
-        {
-          label: "vehicle Vefication",
-          // icon: "pi pi-check",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/vehicle-verification">
-                {/* <span className="pi pi-list mr-2" /> */}
-                <span>Verification</span>
-              </Link>
-            </div>
-          ),
-        },
-        {
-          label: "vehicle Upload",
-          // icon: "pi pi-check",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/vehicle-upload">
-                {/* <span className="pi pi-list mr-2" /> */}
-                <span>Upload</span>
-              </Link>
-            </div>
-          ),
-        },
-      ],
-    },
-    {
-      label: "Bids",
-      // icon: "pi pi-id-card",
-      expanded: true,
-      items: [
-        {
-          label: "View Bids",
-          // icon: "pi pi-eye",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/view-bids">
-                {/* <span className="pi pi-eye mr-2" /> */}
-                <span>View Bids</span>
-              </Link>
-            </div>
-          ),
-        },
-        {
-          label: "Bid Limit",
-          // icon: "pi pi-sliders-h",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/bid-limit">
-                {/* <span className="pi pi-sliders-h mr-2" /> */}
-                <span>Bid Limit</span>
-              </Link>
-            </div>
-          ),
-        },
-      ],
-    },
-    {
-      label: "Payment",
-      // icon: "pi pi-id-card",
-      expanded: true,
-      items: [
-        {
-          label: "History",
-          // icon: "pi pi-eye",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/payment/history">
-                {/* <span className="pi pi-eye mr-2" /> */}
-                <span>History</span>
-              </Link>
-            </div>
-          ),
-        },
-      ],
-    },
+ 
+    // {
+    //   label: "Payment",
+    //   // icon: "pi pi-id-card",
+    //   expanded: true,
+    //   items: [
+    //     {
+    //       label: "History",
+    //       // icon: "pi pi-eye",
+    //       template: () => (
+    //         <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+    //           <Link href="/vahaanbazar/payment/history">
+    //             {/* <span className="pi pi-eye mr-2" /> */}
+    //             <span>History</span>
+    //           </Link>
+    //         </div>
+    //       ),
+    //     },
+    //   ],
+    // },
   ];
 
   return (

@@ -1,6 +1,6 @@
 export const LOGINURL = {
-  LOGIN: "v1/login",
-  MOBILE_LOGIN_OTP: "v1/otp-login-request",
+  LOGIN: "v1/auth/login",
+  MOBILE_LOGIN_OTP: "v1/auth/otp-login-request",
   MOBILE_LOGIN: "v1/otp-login",
   FORGET_PASSWORD_OTP: "v1/forgot-password",
   RESET_PASSWORD: "v1/reset-password",
@@ -8,16 +8,20 @@ export const LOGINURL = {
 };
 
 export const REGISTER = {
-  REGISTER: "v1/register",
-  VERIFY_REGISTER: "v1/verify-otp",
-  REGISTER_OTP_RESEND: "v1/resend-otp",
+  REGISTER: "v1/auth/register",
+  VERIFY_REGISTER: "v1/auth/verify-otp",
+  REGISTER_OTP_RESEND: "v1/auth/resend-otp",
 };
 
 export const BIDS = {
-  VIEW_BIDS: "v1/admin/bids/get_max_bids",
-  BID_APPROVAL : "v1/admin/bids/approve_bid",
-  BID_SUBSCRIPTION : "v1/bidlimitsubscriptions",
+  VIEW_AUCTIONS: "v1/auctions-admin/list-auctions",
+  VIEW_VEHICLES:"v1/auctions-admin/auctions/details",
+  GET_TOP_BIDS : "v1/auctions-admin/top-bids",
+  BID_APPROVAL_PAYMENT : "v1/auctions-admin/update-payment",
+  BID_SUBSCRIPTION : "v1/subscription/subscription-listing",
+  CREATE_UPDATE_BID_SUBSCRIPTION : "v1/auctions-admin/subscription-plans",
   VEHICLE_SUBSCRIPTION : "v1/vehicleaccesssubscriptions",
+  APPROVED_BIDS : "v1/auctions-admin/auction-approved-bids"
 };
  export const USERS = {
   VIEW_USERS_LIST : "v1/admin/users",

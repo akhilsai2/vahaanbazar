@@ -25,27 +25,27 @@ const BidLimit = () => {
     plan_id: v4(),
     spend_limit: "",
     validity_days: "",
-    is_active: false,
+    status: false,
   });
 
   const FetchBidSub = async (id) => {
     try {
-      if (id && typeof id !== "string") {
-        const response = await GetBidSubscription(id);
+      if (id) {
+        const response = plans.filter((plan) => plan.plan_code === id)[0];
         setNewPlan({
           ...newPlan,
-          plan_name: response.plan_name,
-          description: response.description,
+          plan_name: response.name,
+          description: response.feat_description,
           price: response.price,
-          spend_limit: response.spend_limit,
-          validity_days: response.validity_days,
-          is_active: response.is_active,
-          plan_id: response.plan_id,
-        }); // Set the fetched data
+          spend_limit: response.plan_metric_value,
+          plan_code: response.plan_code,
+          is_active: response.status === "active" ? true : false,
+          plan_code: response.plan_code,
+        });
         setShowDialog(true);
       } else {
         const response = await GetBidSubscription();
-        setPlans(response.data); // Set the fetched data
+        setPlans(response.data.plans); // Set the fetched data
       }
     } catch (error) {
       console.error("Error fetching bids:", error.message);
@@ -62,7 +62,7 @@ const BidLimit = () => {
   };
 
   const handleDialogSubmit = async (newPlan) => {
-    if (!newPlan.plan_name || !newPlan.price || !newPlan.spend_limit || !newPlan.validity_days) {
+    if (!newPlan.plan_name || !newPlan.price || !newPlan.spend_limit) {
       alert("Please fill all required fields");
       return;
     }
@@ -70,9 +70,19 @@ const BidLimit = () => {
     setLoading(true);
     const toastId = showLoadingToast("Loading Bid...");
     try {
-      const response = await createUpateBidSubscription(newPlan);
+      const _body = {
+        feat_description: newPlan?.description ,
+        name: newPlan.plan_name,
+        plan_code: newPlan?.plan_code,
+        plan_metric: "days",
+        plan_metric_value: newPlan.spend_limit,
+        price: newPlan.price,
+        status: newPlan.is_active ? "active" : "inactive",
+        type_code: "SUBT002",
+      };
+      const response = await createUpateBidSubscription(_body);
       if (response) {
-        if (typeof newPlan.id !== "string") {
+        if (newPlan.plan_code) {
           updateToSuccessToast(toastId, "Bid Subscription Plan Updated Successfully");
         } else {
           updateToSuccessToast(toastId, "Bid Subscription Plan Created Successfully");
@@ -82,12 +92,11 @@ const BidLimit = () => {
       // Reset form and close dialog
       setShowDialog(false);
       setNewPlan({
-        plan_id: v4(),
         plan_name: "",
+        plan_code: "",
         description: "",
         price: "",
         spend_limit: "",
-        validity_days: "",
         is_active: false,
       });
     } catch (error) {
@@ -103,6 +112,7 @@ const BidLimit = () => {
     setNewPlan({
       plan_id: v4(),
       plan_name: "",
+      plan_code: "",
       description: "",
       price: "",
       spend_limit: "",
@@ -120,7 +130,7 @@ const BidLimit = () => {
         updated.splice(index, 1);
         setPlans(updated);
         updateToSuccessToast(toastId, "Bid Subscription Plan Deleted Successfully");
-        FetchBidSub()
+        FetchBidSub();
       }
     } catch (error) {
       console.error("Error deleting bid subscription plan:", error.message);
@@ -141,11 +151,11 @@ const BidLimit = () => {
   };
   const isActiveBodyTemplate = (rowData) => {
     const toggleActive = () => {
-      const updatedPlans = plans.map((plan) => (plan.plan_id === rowData.plan_id ? { ...plan, is_active: !plan.is_active } : plan));
+      const updatedPlans = plans.map((plan) => (plan.plan_code === rowData.plan_code ? { ...plan, status: plan.status === "active" ? true : false } : plan));
       setPlans(updatedPlans);
     };
 
-    return <Checkbox checked={rowData.is_active} onChange={toggleActive} className="p-checkbox-sm" disabled={true} />;
+    return <Checkbox checked={rowData.status === "active" ? true : false} onChange={toggleActive} className="p-checkbox-sm" disabled={true} />;
   };
   const addUpdateRow = (id) => {
     FetchBidSub(id);
@@ -153,8 +163,8 @@ const BidLimit = () => {
 
   const planBodyTemplate = (rowData) => {
     return (
-      <span className="text-blue-500 cursor-pointer hover:underline" onClick={() => addUpdateRow(rowData.plan_id)}>
-        {rowData.plan_name}
+      <span className="text-blue-500 cursor-pointer hover:underline" onClick={() => addUpdateRow(rowData.plan_code)}>
+        {rowData.name}
       </span>
     );
   };
@@ -170,14 +180,14 @@ const BidLimit = () => {
       <Divider />
 
       <Dialog
-        header={typeof newPlan.plan_id !== "string" ? "Update Bid Limit" : "Create Bid Limit"}
+        header={newPlan.plan_code ? "Update Bid Limit" : "Create Bid Limit"}
         visible={showDialog}
         style={{ width: "500px" }}
         onHide={() => handleDialogClose()}
         footer={
           <div className="flex justify-end gap-4">
             <Button label="Cancel" className=" secondaryBtn p-button-text" onClick={() => handleDialogClose()} />
-            <Button label={typeof newPlan.plan_id !== "string" ? "Update":"Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
+            <Button label={newPlan.plan_code ? "Update" : "Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
           </div>
         }
       >
@@ -187,12 +197,13 @@ const BidLimit = () => {
       <div className="h-full">
         <DataTable value={plans} className="p-datatable-gridlines h-100" dataKey="plan_id" columnResizeMode="expand" scrollable scrollHeight="flex" loading={loading}>
           <Column field="plan_name" header="Plan Name" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} body={planBodyTemplate} />
-          <Column field="description" header="Description" bodyStyle={{ minWidth: "200px", maxWidth: "200px" }} />
+          <Column field="plan_code" header="Code" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} />
+          <Column field="feat_description" header="Description" bodyStyle={{ minWidth: "200px", maxWidth: "200px" }} />
           <Column field="is_active" header="Active" body={isActiveBodyTemplate} bodyStyle={{ minWidth: "100px", maxWidth: "100px", textAlign: "center" }} align={"center"} />
           <Column field="price" header="Price" bodyStyle={{ minWidth: "120px", maxWidth: "120px" }} align="right" />
-          <Column field="spend_limit" header="Spend Limit" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align={"right"} />
-          <Column field="validity_days" header="Validity (Days)" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align={"right"} />
-          <Column body={actionBodyTemplate} header="Actions" bodyStyle={{ minWidth: "80px", maxWidth: "80px", textAlign: "center" }} />
+          <Column field="plan_metric_value" header="Spend Limit(Days / Amount)" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align={"right"} />
+          <Column field="plan_metric" header="Validity" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align={"right"} />
+          {/* <Column body={actionBodyTemplate} header="Actions" bodyStyle={{ minWidth: "80px", maxWidth: "80px", textAlign: "center" }} /> */}
         </DataTable>
       </div>
     </div>

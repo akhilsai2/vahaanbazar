@@ -10,6 +10,7 @@ import Logo from "../../../public/assets/VahaanBazar1.png";
 import Image from "next/image";
 import useLoginService from "@/services/useLoginService";
 import useToastService from "@/services/useToastService";
+import Cookies from "js-cookie"
 
 export default function Signup({ setUserRegistration }) {
   const { signup, verifySignup ,resendSignupOtp} = useLoginService();
@@ -28,38 +29,27 @@ export default function Signup({ setUserRegistration }) {
   const [mobileVerification, setMobileVerification] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  
 
   const userTypeOptions = [
-    { label: "Customer", value: "customer" },
-    { label: "Dealer", value: "dealer" },
-    { label: "Admin", value: "admin" },
+    { label: "Customer", value: "CUSTOMER" },
+    { label: "Dealer", value: "DEALER" },
+    { label: "Admin", value: "ADMIN" },
   ];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setMobileVerification(true);
     if (password !== confirmPassword) {
       setError("Passwords do not match");
     }
     setError("");
-    console.log({
-      username,
-      email,
-      password,
-      mobile_number: mobile,
-      first_name: firstName,
-      last_name: lastName,
-      state,
-      city,
-      user_type: userType,
-    });
+
 
     const credentials = {
       username,
       email,
       password,
-      mobile_number: mobile,
+      phone_number: mobile,
       first_name: firstName,
       last_name: lastName,
       state,
@@ -68,11 +58,20 @@ export default function Signup({ setUserRegistration }) {
     };
     const toastId = showLoadingToast("Signing up...");
      signup(credentials).then((response) => {
-        if (response) {
+      console.log(response)
+        if (response&&response?.data && response?.data!==null) {
+          
           updateToSuccessToast(toastId, "Signup successful! Please verify your mobile number.");
-          setMobileVerification(true); // Show mobile verification screen
+          Cookies.set("transId",response?.data?.transaction_id)
+            setMobileVerification(true); // Show mobile verification screen
+
+        
         } else {
-          updateToErrorToast(toastId, "Signup failed. Please try again.");
+          if(response.error){
+          
+            updateToErrorToast(toastId, response.error?.details?.message);
+setMobileVerification(false)
+          }
         }
       })
       .catch((error) => {
@@ -103,7 +102,7 @@ export default function Signup({ setUserRegistration }) {
       console.log("Verifying OTP:", otpValue);
       // Call your API to verify OTP here
       const toastId = showLoadingToast("Verifying OTP...");
-      verifySignup({mobile_number:mobile, otp_code: otpValue })
+      verifySignup({mobile_number:mobile, otp_code: otpValue,transaction_id:Cookies.get("transId") })
         .then((response) => {
           if (response) {
             updateToSuccessToast(toastId, "OTP verified successfully!");

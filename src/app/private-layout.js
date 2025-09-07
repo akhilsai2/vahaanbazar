@@ -27,7 +27,7 @@ const PrivateLayout = ({ children }) => {
     <div className="min-h-screen flex flex-col">
       <NavBar toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 transition-all duration-300">
-        <div className={`bg-gray-700 text-white w-45 px-3 py-1 fixed top-17 bottom-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"} transition-transform duration-300 z-40`}>
+        <div className={`bg-gray-700 text-white w-45 px-3 py-1 fixed top-16 bottom-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"} transition-transform duration-300 z-40`}>
           {sideMenu}
         </div>
         <div className={`flex-1 ml-0 w-65 ${isSidebarOpen ? "ml-45" : "ml-0"} transition-all duration-300 p-4 bg-[#c7c7c70f]`}>{children}</div>

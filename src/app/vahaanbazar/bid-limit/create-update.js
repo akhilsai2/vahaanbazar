@@ -13,6 +13,10 @@ const CreateUpdate = (props) => {
           <InputText  value={newPlan.plan_name} onChange={(e) => setNewPlan({ ...newPlan, plan_name: e.target.value })} className="w-full h-8 px-4 py-2" required />
         </div>
         <div className="w-[100%]">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Plan Code*</label>
+          <InputText  value={newPlan.plan_code} onChange={(e) => setNewPlan({ ...newPlan, plan_code: e.target.value })} className="w-full h-8 px-4 py-2" required />
+        </div>
+        <div className="w-[100%]">
           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
           <InputTextarea autoResize value={newPlan.description} onChange={(e) => setNewPlan({ ...newPlan, description: e.target.value })} className="w-full h-8 px-4 py-3" />
         </div>
@@ -28,9 +32,9 @@ const CreateUpdate = (props) => {
         </div>
       </div>
       <div className="flex gap-4">
-        <div className="w-1/2">
+              <div className="w-1/2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Validity Days*</label>
-          <InputText value={newPlan.validity_days} onChange={(e) => setNewPlan({ ...newPlan, validity_days: e.target.value })} className="w-full h-8 px-4 py-2" required />
+          <InputText type="number" value={newPlan.plan_metric_value} onChange={(e) => setNewPlan({ ...newPlan, plan_metric_value: e.target.value })} className="w-full h-8 px-4 py-2" required />
         </div>
         <div className="w-1/2 flex items-center gap-2 mt-6">
           <Checkbox inputId="is_active" checked={newPlan.is_active} onChange={(e) => setNewPlan({ ...newPlan, is_active: e.checked })} />

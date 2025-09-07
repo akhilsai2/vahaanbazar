@@ -7,11 +7,11 @@ const BASE_AUTH =process.env.NEXT_PUBLIC_AUTH_TOKEN;
 
 const headers =Cookies.get("AccessToken") ? {
   "Content-Type": "application/json",
-  "X-API-Key": `Auth ${BASE_AUTH}`,
+  "X-API-Key": `${BASE_AUTH}`,
   "Authorization": `Bearer ${Cookies.get("AccessToken")}`,
 } :  {
   "Content-Type": "application/json",
-  "X-API-Key": `Auth ${BASE_AUTH}`,
+  "X-API-Key": `${BASE_AUTH}`,
   
 };
 
