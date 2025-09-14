@@ -84,82 +84,82 @@ const SideMenu = () => {
             </div>
           ),
         },
-        // {
-        //   label: "vehicle Upload",
-        //   // icon: "pi pi-check",
-        //   template: () => (
-        //     <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-        //       <Link href="/vahaanbazar/vehicle-upload">
-        //         {/* <span className="pi pi-list mr-2" /> */}
-        //         <span>Upload</span>
-        //       </Link>
-        //     </div>
-        //   ),
-        // },
-      ],
-    },
-    {
-      label: "I & F",
-      // icon: "pi pi-id-card",
-      expanded: true,
-      items: [        
         {
-          label: "Insurance & Finance",
+          label: "vehicle Interest",
           // icon: "pi pi-check",
           template: () => (
             <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/insurance-finance">
+              <Link href="/vahaanbazar/vehicle-interest">
                 {/* <span className="pi pi-list mr-2" /> */}
-                <span>Vehicles</span>
-              </Link>
-            </div>
-          ),
-        },
-        // {
-        //   label: "vehicle Upload",
-        //   // icon: "pi pi-check",
-        //   template: () => (
-        //     <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-        //       <Link href="/vahaanbazar/vehicle-upload">
-        //         {/* <span className="pi pi-list mr-2" /> */}
-        //         <span>Upload</span>
-        //       </Link>
-        //     </div>
-        //   ),
-        // },
-      ],
-    },
-     {
-      label: "Activity",
-      // icon: "pi pi-user",
-      expanded: true,
-      items: [
-        {
-          label: "User Wins",
-          // icon: "pi pi-user",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/user-wins">
-                {/* <span className="pi pi-user mr-2" /> */}
-                <span>User Wins</span>
-              </Link>
-            </div>
-          ),
-        },
-        {
-          label: "User Plans",
-          // icon: "pi pi-list",
-          template: () => (
-            <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
-              <Link href="/vahaanbazar/user-plans">
-                {/* <span className="pi pi-list mr-2" /> */}
-                <span>User Plans</span>
+                <span>Interest</span>
               </Link>
             </div>
           ),
         },
       ],
     },
+    // {
+    //   label: "I & F",
+    //   // icon: "pi pi-id-card",
+    //   expanded: true,
+    //   items: [        
+    //     {
+    //       label: "Insurance & Finance",
+    //       // icon: "pi pi-check",
+    //       template: () => (
+    //         <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+    //           <Link href="/vahaanbazar/insurance-finance">
+    //             {/* <span className="pi pi-list mr-2" /> */}
+    //             <span>Vehicles</span>
+    //           </Link>
+    //         </div>
+    //       ),
+    //     },
+    //     // {
+    //     //   label: "vehicle Upload",
+    //     //   // icon: "pi pi-check",
+    //     //   template: () => (
+    //     //     <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+    //     //       <Link href="/vahaanbazar/vehicle-upload">
+    //     //         {/* <span className="pi pi-list mr-2" /> */}
+    //     //         <span>Upload</span>
+    //     //       </Link>
+    //     //     </div>
+    //     //   ),
+    //     // },
+    //   ],
+    // },
+    //  {
+    //   label: "Activity",
+    //   // icon: "pi pi-user",
+    //   expanded: true,
+    //   items: [
+    //     {
+    //       label: "User Wins",
+    //       // icon: "pi pi-user",
+    //       template: () => (
+    //         <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+    //           <Link href="/vahaanbazar/user-wins">
+    //             {/* <span className="pi pi-user mr-2" /> */}
+    //             <span>User Wins</span>
+    //           </Link>
+    //         </div>
+    //       ),
+    //     },
+    //     {
+    //       label: "User Plans",
+    //       // icon: "pi pi-list",
+    //       template: () => (
+    //         <div className="p-menuitem-link" onClick={(e) => e.stopPropagation()}>
+    //           <Link href="/vahaanbazar/user-plans">
+    //             {/* <span className="pi pi-list mr-2" /> */}
+    //             <span>User Plans</span>
+    //           </Link>
+    //         </div>
+    //       ),
+    //     },
+    //   ],
+    // },
  
     // {
     //   label: "Payment",

@@ -226,17 +226,17 @@ td,
 .link_pointer {
   cursor: pointer;
 }
-.p-fileupload  {
-  width:50% !important;
-  
+.p-fileupload {
+  width: 50% !important;
+
   /* align-items: center !important; */
 }
-.p-fileupload-buttonbar button:first-of-type  {
+.p-fileupload-buttonbar button:first-of-type {
   display: none !important;
 }
-.p-fileupload .p-fileupload-content{
-  height:15vh !important;
-  overflow:auto !important;
+.p-fileupload .p-fileupload-content {
+  height: 15vh !important;
+  overflow: auto !important;
 }
 .orderCalender-container {
   position: absolute;
@@ -252,6 +252,19 @@ td,
   border-left: none;
 }
 
-.p-dropdown{
+.p-dropdown {
   padding: 0px 0px !important;
+}
+#buyselltable,
+.p-datatable-wrapper {
+  height: 75vh;
+}
+.p-paginator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: start !important;
+  padding: 0px !important;
+}
+.p-paginator .p-dropdown {
+  height: 1.8rem !important;
 }

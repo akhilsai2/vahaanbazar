@@ -19,24 +19,27 @@ const BidLimit = () => {
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [newPlan, setNewPlan] = useState({
+    id:v4(),
     plan_name: "",
+    plan_metric:"days",
     description: "",
     price: "",
-    plan_id: v4(),
     spend_limit: "",
     validity_days: "",
-    status: false,
+    status: true,
   });
 
   const FetchBidSub = async (id) => {
     try {
       if (id) {
         const response = plans.filter((plan) => plan.plan_code === id)[0];
+        delete newPlan?.id
         setNewPlan({
           ...newPlan,
           plan_name: response.name,
           description: response.feat_description,
           price: response.price,
+          plan_metric:response.plan_metric,
           spend_limit: response.plan_metric_value,
           plan_code: response.plan_code,
           is_active: response.status === "active" ? true : false,
@@ -74,24 +77,27 @@ const BidLimit = () => {
         feat_description: newPlan?.description ,
         name: newPlan.plan_name,
         plan_code: newPlan?.plan_code,
-        plan_metric: "days",
+        plan_metric: newPlan.plan_metric,
         plan_metric_value: newPlan.spend_limit,
         price: newPlan.price,
         status: newPlan.is_active ? "active" : "inactive",
         type_code: "SUBT002",
       };
-      const response = await createUpateBidSubscription(_body);
+      const response = await createUpateBidSubscription(_body,newPlan.id);
       if (response) {
-        if (newPlan.plan_code) {
+        if (!newPlan.id) {
           updateToSuccessToast(toastId, "Bid Subscription Plan Updated Successfully");
+                setNewPlan({ id:undefined,       plan_name: "",
+        plan_code: "",
+        description: "",
+        price: "",
+        spend_limit: "",
+        is_active: false,
+      });
         } else {
           updateToSuccessToast(toastId, "Bid Subscription Plan Created Successfully");
-        }
-      }
-      await FetchBidSub();
-      // Reset form and close dialog
-      setShowDialog(false);
-      setNewPlan({
+                setNewPlan({
+        id:undefined,
         plan_name: "",
         plan_code: "",
         description: "",
@@ -99,6 +105,12 @@ const BidLimit = () => {
         spend_limit: "",
         is_active: false,
       });
+        }
+      }
+      await FetchBidSub();
+      // Reset form and close dialog
+      setShowDialog(false);
+
     } catch (error) {
       console.error("Error submitting bid subscription plan:", error.message);
       updateToErrorToast(toastId, "Failed to save bid subscription plan. Please try again.");
@@ -110,14 +122,15 @@ const BidLimit = () => {
   const handleDialogClose = () => {
     setShowDialog(false);
     setNewPlan({
-      plan_id: v4(),
+      id: v4(),
       plan_name: "",
       plan_code: "",
+      plan_metric:"days",
       description: "",
       price: "",
       spend_limit: "",
       validity_days: "",
-      is_active: false,
+      status: false,
     });
   };
 
@@ -168,7 +181,7 @@ const BidLimit = () => {
       </span>
     );
   };
-
+  console.log(newPlan)
   return (
     <div className="viewDetailsSection">
       <div className="flex justify-between items-center">
@@ -180,16 +193,17 @@ const BidLimit = () => {
       <Divider />
 
       <Dialog
-        header={newPlan.plan_code ? "Update Bid Limit" : "Create Bid Limit"}
+        header={!newPlan.id ? "Update Bid Limit" : "Create Bid Limit"}
         visible={showDialog}
         style={{ width: "500px" }}
         onHide={() => handleDialogClose()}
         footer={
           <div className="flex justify-end gap-4">
             <Button label="Cancel" className=" secondaryBtn p-button-text" onClick={() => handleDialogClose()} />
-            <Button label={newPlan.plan_code ? "Update" : "Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
+            <Button label={!newPlan.id ? "Update" : "Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
           </div>
         }
+        key={newPlan}
       >
         <CreateUpdate handleDialogSubmit={handleDialogSubmit} newPlan={newPlan} setNewPlan={setNewPlan} />
       </Dialog>

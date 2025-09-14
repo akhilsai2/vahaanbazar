@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   devIndicators:false,
   images: {
-    domains: ["vahaanbazar-wip.s3.ap-south-2.amazonaws.com","auction-import-images.s3.ap-south-2.amazonaws.com","djl8cizpwq8nq.cloudfront.net"],
+    domains: ["vahaanbazar-wip.s3.ap-south-2.amazonaws.com","auction-import-images.s3.ap-south-2.amazonaws.com","djl8cizpwq8nq.cloudfront.net","ops.adroitauto.in"],
     contentDispositionType: 'inline',
   }
 }

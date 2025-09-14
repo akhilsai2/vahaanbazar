@@ -1,6 +1,8 @@
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from "primereact/dropdown";
+
 import React from "react";
 
 const CreateUpdate = (props) => {
@@ -27,17 +29,18 @@ const CreateUpdate = (props) => {
           <InputText type="number" value={newPlan.price} onChange={(e) => setNewPlan({ ...newPlan, price: e.target.value })} className="w-full h-8 px-4 py-2" required />
         </div>
         <div className="w-1/2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Spend Limit Days</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Spend Limit Days / Amounts</label>
           <InputText type="number" value={newPlan.spend_limit} onChange={(e) => setNewPlan({ ...newPlan, spend_limit: e.target.value })} className="w-full h-8 px-4 py-2" required />
         </div>
       </div>
       <div className="flex gap-4">
-              {/* <div className="w-1/2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Validity Days*</label>
-          <InputText type="number" value={newPlan.plan_metric_value} onChange={(e) => setNewPlan({ ...newPlan, plan_metric_value: e.target.value })} className="w-full h-8 px-4 py-2" required />
-        </div> */}
+              <div className="w-1/2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Validity Days / Amount*</label>
+                    <Dropdown value={newPlan.plan_metric} options={["days","amount"]} onChange={(e) => setNewPlan({ ...newPlan, plan_metric: e.value })} />
+
+        </div>
         <div className="w-1/2 flex items-center gap-2 mt-6">
-          <Checkbox inputId="is_active" checked={newPlan.is_active} onChange={(e) => setNewPlan({ ...newPlan, is_active: e.checked })} />
+          <Checkbox inputId="is_active" checked={newPlan.status} onChange={(e) => setNewPlan({ ...newPlan, status: e.checked })} />
           <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
             Active
           </label>

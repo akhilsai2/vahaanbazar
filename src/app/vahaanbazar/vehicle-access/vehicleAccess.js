@@ -22,15 +22,17 @@ const VehicleAccess = () => {
     plan_name: "",
     description: "",
     price: "",
-    plan_id: v4(),
-    validity_days: "",
-    is_active: false,
+    id: v4(),
+    plan_metric: "days",
+    spend_limit:"",
+    status: false,
   });
 
   const FetchBidSub = async (id) => {
     try {
       if (id) {
         const response = plans.filter((plan) => plan.plan_code === id)[0];
+        delete newPlan?.id
         setNewPlan({
           ...newPlan,
           plan_name: response.name,
@@ -38,8 +40,9 @@ const VehicleAccess = () => {
           price: response.price,
           spend_limit: response.plan_metric_value,
           plan_code: response.plan_code,
-          is_active: response.status === "active" ? true : false,
+          status: response.status === "active" ? true : false,
           plan_code: response.plan_code,
+          plan_metric:response.plan_metric
         });
         setShowDialog(true);
       }
@@ -109,10 +112,10 @@ const VehicleAccess = () => {
         feat_description: newPlan?.description ,
         name: newPlan.plan_name,
         plan_code: newPlan?.plan_code,
-        plan_metric: "days",
+        plan_metric: newPlan?.plan_metric,
         plan_metric_value: newPlan.spend_limit,
         price: newPlan.price,
-        status: newPlan.is_active ? "active" : "inactive",
+        status: newPlan.status ? "active" : "inactive",
         type_code: "SUBT001",
       };
       const response = await createUpateVehicleSubscription(_body);
@@ -127,12 +130,14 @@ const VehicleAccess = () => {
       // Reset form and close dialog
       setShowDialog(false);
       setNewPlan({
-        plan_id: v4(),
+        id: v4(),
         plan_name: "",
         description: "",
         price: "",
         validity_days: "",
-        is_active: false,
+        plan_metric:"days",
+        spend_limit:"",
+        status: false,
       });
     } catch (error) {
       console.error("Error submitting Vehicle subscription plan:", error.message);
@@ -161,13 +166,13 @@ const VehicleAccess = () => {
   const handleDialogClose = () => {
     setShowDialog(false);
     setNewPlan({
-      plan_id: v4(),
+      id: v4(),
       plan_name: "",
       description: "",
       price: "",
       spend_limit: "",
-      validity_days: "",
-      is_active: false,
+      plan_metric: "",
+      status: true,
     });
   };
 
@@ -181,14 +186,14 @@ const VehicleAccess = () => {
       </div>
       <Divider />
       <Dialog
-        header={newPlan.plan_code ? "Update Bid Limit" : "Create Bid Limit"}
+        header={!newPlan.id ? "Update Bid Limit" : "Create Bid Limit"}
         visible={showDialog}
         style={{ width: "500px" }}
         onHide={() => handleDialogClose()}
         footer={
           <div className="flex justify-end gap-4">
             <Button label="Cancel" className=" secondaryBtn p-button-text" onClick={() => handleDialogClose()} />
-            <Button label={newPlan.plan_code ? "Update" : "Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
+            <Button label={!newPlan.id ? "Update" : "Create"} className="bg-blue-500 text-white" onClick={() => handleDialogSubmit(newPlan)} />
           </div>
         }
       >
@@ -201,7 +206,7 @@ const VehicleAccess = () => {
           <Column field="plan_name" header="Plan Name" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} body={planBodyTemplate} />
           <Column field="plan_code" header="Code" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} />
           <Column field="feat_description" header="Description" bodyStyle={{ minWidth: "200px", maxWidth: "200px" }} />
-          <Column field="is_active" header="Active" align={"center"} body={isActiveBodyTemplate} bodyStyle={{ minWidth: "100px", maxWidth: "100px", textAlign: "center" }} />
+          <Column field="is_active" header="Status" align={"center"} body={isActiveBodyTemplate} bodyStyle={{ minWidth: "100px", maxWidth: "100px", textAlign: "center" }} />
           <Column field="price" header="Price" bodyStyle={{ minWidth: "120px", maxWidth: "120px" }} align={"right"} />
           <Column field="plan_metric_value" header="Spend Limit(Days / Amount)" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align={"right"} />
           <Column field="plan_metric" header="Validity (Days / Amount)" bodyStyle={{ minWidth: "150px", maxWidth: "150px" }} align="right" />

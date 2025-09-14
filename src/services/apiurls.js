@@ -2,14 +2,14 @@ export const LOGINURL = {
   LOGIN: "v1/auth/login",
   MOBILE_LOGIN_OTP: "v1/auth/otp-login-request",
   MOBILE_LOGIN: "v1/otp-login",
-  FORGET_PASSWORD_OTP: "v1/forgot-password",
+  FORGET_PASSWORD_OTP: "v1/forgot-password/send-otp",
   RESET_PASSWORD: "v1/reset-password",
   FORGET_PASSWORD_OTP_RESEND: "v1/forgotpwd-resend-otp",
 };
 
 export const REGISTER = {
   REGISTER: "v1/auth/register",
-  VERIFY_REGISTER: "v1/auth/verify-otp",
+  VERIFY_REGISTER: "v1/auth/otp-verify",
   REGISTER_OTP_RESEND: "v1/auth/resend-otp",
 };
 
@@ -38,4 +38,10 @@ export const BIDS = {
  }
  export const PAYMENT = {
   PAYMENT_HISTORY:"v1/payments",
+ }
+
+ export const BUY_SELL ={
+  LIST_VEHICLES : "v1/sell-buy-admin/list-vehicles",
+  APPROVE_BUY_SELL : "v1/sell-buy-admin/approve-vehicles",
+  LIST_VEHICLES_INTEREST: "v1/sell-buy-admin/vehicle-interests"
  }

@@ -40,7 +40,7 @@ export default function Login({ setUserRegistration }) {
         Cookies.set("User", response?.data?.username);
         Cookies.set("UserId", response?.data?.user_id);
         Cookies.set("UserType", response?.data?.user_type);
-        router.push("/vahaanbazar/view-bids");
+        router.push("/vahaanbazar/view-auctions");
       }
     } catch (err) {
       console.error("Login failed:", err.message);
@@ -54,7 +54,7 @@ export default function Login({ setUserRegistration }) {
       return;
     }
     try {
-      const res = await forgetPasswordOtp({ mobile_number: mobile });
+      const res = await forgetPasswordOtp({ username_phone: mobile });
       if (res) {
         setOtpSent(true);
       }
@@ -155,7 +155,7 @@ export default function Login({ setUserRegistration }) {
     setOtp(new Array(6).fill(""));
     setResendLoading(true);
     try {
-      await forgetPasswordOtpResend({ mobile });
+      await forgetPasswordOtpResend({ username_phone:mobile });
       toastService.showSuccessToast("OTP resent successfully.");
     } catch (error) {
       toastService.showErrorToast("Failed to resend OTP. Please try again.");
@@ -171,7 +171,7 @@ export default function Login({ setUserRegistration }) {
       return;
     }
     try {
-      const res = await resetPassword({ mobile_number: mobile, otp: otp.join(""), new_password: newPassword });
+      const res = await resetPassword({ username_phone: mobile, otp_code: otp.join(""), new_password: newPassword,transaction_id });
       if (res) {
         setForgotPassword(false);
         setOtpVerified(false);
@@ -421,9 +421,9 @@ export default function Login({ setUserRegistration }) {
           </span>
         </p>
         <div className="flex flex-col items-end justify-center mt-4">
-          <p className="mt-2 text-center text-sm hover:underline text-blue-500 cursor-pointer" onClick={() => setMobileLogin(true)}>
+          {/* <p className="mt-2 text-center text-sm hover:underline text-blue-500 cursor-pointer" onClick={() => setMobileLogin(true)}>
             Log in with Mobile Number
-          </p>
+          </p> */}
           <p className="mt-2 text-center text-sm hover:underline text-blue-500 cursor-pointer" onClick={() => setForgotPassword(true)}>
             Forgot Password?
           </p>

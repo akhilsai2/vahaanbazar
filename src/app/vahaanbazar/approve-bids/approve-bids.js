@@ -33,7 +33,7 @@ const ApproveBids = () => {
     }
   };
   useEffect(() => {
-    FetchBids(7);
+    FetchBids(30);
   }, []);
 
   const dateTemplate = (rowData, field) => {
